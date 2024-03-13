@@ -6,6 +6,9 @@ import com.streamhub.videostreamhub.camera.controller.dto.RegisterCameraDTO;
 import com.streamhub.videostreamhub.camera.repository.Camera;
 import com.streamhub.videostreamhub.camera.repository.CameraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -29,4 +32,20 @@ public class CameraController {
         ResponseEntity teste = ResponseEntity.created(uri).body(new CameraDTO(camera));
         return teste;
     }
+
+    @GetMapping
+    @Transactional
+    public ResponseEntity<Page<CameraDTO>> listAll(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page){
+        var returnPage =  repository.findAll(page).map( CameraDTO::new);
+        return ResponseEntity.ok(returnPage);
+    }
+
+    @GetMapping("/customer/{id}")
+    @Transactional
+    public ResponseEntity<Page<CameraDTO>> listAllByCustomerId(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page,@PathVariable Long id){
+        var returnPage =  repository.findAllByCustomerIdEquals(page,id).map(CameraDTO::new);
+        //var returnPage =  repository.findAll(page).map( CameraDTO::new);
+        return ResponseEntity.ok(returnPage);
+    }
+
 }
