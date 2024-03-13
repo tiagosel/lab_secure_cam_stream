@@ -4,10 +4,15 @@ import jakarta.validation.constraints.NotBlank;
 public record RegisterCameraDTO(
         @NotBlank
         String manufacturer,
+        @NotBlank
         Long customerId,
+        @NotBlank
         String environment,
+        @NotBlank
         String model,
+        @NotBlank
         String nickName,
+        @NotBlank
         String serialNumber) {
 
 
