@@ -1,0 +1,1 @@
+ALTER TABLE camera MODIFY manufacturer VARCHAR(50) NOT NULL;
