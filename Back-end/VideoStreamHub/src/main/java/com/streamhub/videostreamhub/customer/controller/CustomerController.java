@@ -1,13 +1,11 @@
 package com.streamhub.videostreamhub.customer.controller;
 
-import com.streamhub.videostreamhub.camera.controller.dto.CameraDTO;
-import com.streamhub.videostreamhub.camera.controller.dto.RegisterCameraDTO;
-import com.streamhub.videostreamhub.camera.repository.Camera;
+
 import com.streamhub.videostreamhub.customer.controller.dto.CustomerDTO;
 import com.streamhub.videostreamhub.customer.controller.dto.RegisterCustomerDTO;
 import com.streamhub.videostreamhub.customer.repository.Customer;
 import com.streamhub.videostreamhub.customer.repository.CustomerRepository;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +22,18 @@ public class CustomerController {
     @Autowired
     private CustomerRepository repository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @PostMapping()
     @Transactional
     public ResponseEntity registerCamera(@RequestBody @Validated RegisterCustomerDTO registerCustomerDTO, UriComponentsBuilder uriBuilder) {
-        var customer = new Customer(registerCustomerDTO);
+        var customer = modelMapper.map(registerCustomerDTO, Customer.class);
+        System.out.println(customer.getCategory());
+        System.out.println(customer.getName());
         repository.save(customer);
+
         var uri = uriBuilder.path("/customer/{id}").buildAndExpand(customer.getId()).toUri();
-        ResponseEntity teste = ResponseEntity.created(uri).body(new CustomerDTO(customer));
-        return teste;
+        return ResponseEntity.created(uri).body(modelMapper.map(customer, CustomerDTO.class));
     }
 }

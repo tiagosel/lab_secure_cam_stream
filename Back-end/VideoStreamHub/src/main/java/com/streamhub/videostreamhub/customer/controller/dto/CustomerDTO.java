@@ -3,17 +3,18 @@ package com.streamhub.videostreamhub.customer.controller.dto;
 
 import com.streamhub.videostreamhub.customer.repository.Customer;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
 
-public record CustomerDTO(
-        Long id,
-        String name,
-        String masterEmail,
-        String phone,
-        String document,
-        String category
-) {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomerDTO {
+    private Long id;
+    private String name;
+    private String masterEmail;
+    private String phone;
+    private String document;
+    private String category;
 
-    public CustomerDTO(Customer customer) {
-        this(customer.getId(),customer.getName(),customer.getMasterEmail(),customer.getPhone(),customer.getDocument(),customer.getCategory());
-    }
 }
