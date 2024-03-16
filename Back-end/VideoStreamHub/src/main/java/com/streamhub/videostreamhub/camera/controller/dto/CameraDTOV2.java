@@ -1,26 +1,18 @@
 package com.streamhub.videostreamhub.camera.controller.dto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+import com.streamhub.videostreamhub.camera.repository.Camera;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCameraDTO {
-
-
-
-    private String manufacturer;
+public class CameraDTOV2 {
 
     private Long id;
+    private String manufacturer;
+    private Long customerId;
     private String environment;
     private String model;
     private String nickName;
     private String serialNumber;
-
-
-
 }

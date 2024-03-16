@@ -1,10 +1,10 @@
 package com.streamhub.videostreamhub.camera.controller;
 
 
-import com.streamhub.videostreamhub.camera.controller.dto.CameraDTO;
-import com.streamhub.videostreamhub.camera.controller.dto.RegisterCameraDTO;
+import com.streamhub.videostreamhub.camera.controller.dto.*;
 import com.streamhub.videostreamhub.camera.repository.Camera;
 import com.streamhub.videostreamhub.camera.repository.CameraRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +22,12 @@ public class CameraController {
     @Autowired
     private CameraRepository repository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private CameraUseCase cameraUseCase;
+
     // Método PUT para registrar uma câmera
     @PostMapping()
     @Transactional
@@ -31,6 +37,16 @@ public class CameraController {
         var uri = uriBuilder.path("/camera/{id}").buildAndExpand(camera.getId()).toUri();
         ResponseEntity teste = ResponseEntity.created(uri).body(new CameraDTO(camera));
         return teste;
+    }
+
+    @PutMapping("{id}")
+    @Transactional
+    public ResponseEntity updateCamera(@RequestBody @Validated UpdateCameraDTO updateCameraDTO, UriComponentsBuilder uriBuilder, @PathVariable Long id) {
+       var camera = repository.getReferenceById(id);
+        modelMapper.map(updateCameraDTO,camera);
+        var uri = uriBuilder.path("/camera/{id}").buildAndExpand(camera.getId()).toUri();
+        var  cameraDTO = modelMapper.map(camera, CameraDTOV2.class);
+        return ResponseEntity.created(uri).body(cameraDTO);
     }
 
     @GetMapping
