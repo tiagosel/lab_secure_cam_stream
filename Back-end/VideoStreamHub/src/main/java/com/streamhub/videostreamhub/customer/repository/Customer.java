@@ -3,12 +3,10 @@ package com.streamhub.videostreamhub.customer.repository;
 
 import com.streamhub.videostreamhub.customer.controller.dto.RegisterCustomerDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -29,11 +27,5 @@ public class Customer {
 
     private String category;
 
-    public Customer(RegisterCustomerDTO registerCustomerDTO) {
-        this.name = registerCustomerDTO.name();
-        this.masterEmail = registerCustomerDTO.masterEmail();
-        this.phone = registerCustomerDTO.phone();
-        this.document = registerCustomerDTO.document();
-        this.category = registerCustomerDTO.category();
-    }
+
 }
