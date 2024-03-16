@@ -30,7 +30,7 @@ public class Camera {
     private String serialNumber;
 
 
-    //TO-DO remover construtor
+    //TODO remover construtor
     public Camera(RegisterCameraDTO registerCameraDTO) {
         this.manufacturer = registerCameraDTO.manufacturer();
         this.customerId = registerCameraDTO.customerId();

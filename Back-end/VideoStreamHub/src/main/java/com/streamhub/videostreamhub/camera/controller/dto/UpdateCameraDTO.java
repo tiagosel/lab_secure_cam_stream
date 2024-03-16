@@ -15,6 +15,7 @@ public class UpdateCameraDTO {
 
     private String manufacturer;
 
+    //TODO Remove unused attribute
     private Long id;
     private String environment;
     private String model;
