@@ -1,4 +1,3 @@
-drop table customer;
 create table customer(
 
     id bigint not null auto_increment,

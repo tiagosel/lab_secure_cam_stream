@@ -30,15 +30,7 @@ public class Camera {
     private String serialNumber;
 
 
-    //TODO remover construtor
-    public Camera(RegisterCameraDTO registerCameraDTO) {
-        this.manufacturer = registerCameraDTO.manufacturer();
-        this.customerId = registerCameraDTO.customerId();
-        this.environment = registerCameraDTO.environment();
-        this.model = registerCameraDTO.model();
-        this.nickName = registerCameraDTO.nickName();
-        this.serialNumber = registerCameraDTO.serialNumber();
-    }
+
 
 
 

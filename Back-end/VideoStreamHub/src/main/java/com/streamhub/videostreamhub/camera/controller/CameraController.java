@@ -32,7 +32,7 @@ public class CameraController {
     @PostMapping()
     @Transactional
     public ResponseEntity registerCamera(@RequestBody @Validated RegisterCameraDTO registerCameraDTO, UriComponentsBuilder uriBuilder) {
-        var camera = new Camera(registerCameraDTO);
+        var camera =  modelMapper.map(registerCameraDTO,Camera.class);
         repository.save(camera);
         var uri = uriBuilder.path("/camera/{id}").buildAndExpand(camera.getId()).toUri();
         return ResponseEntity.created(uri).body(modelMapper.map(camera, CameraDTO.class));
@@ -51,8 +51,7 @@ public class CameraController {
     @GetMapping
     @Transactional
     public ResponseEntity<Page<CameraDTO>> listAll(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page){
-            var returnPage =  repository.findAll(page).map(Camera -> modelMapper.map(Camera, CameraDTO.class));
-
+        var returnPage =  repository.findAll(page).map(Camera -> modelMapper.map(Camera, CameraDTO.class));
         return ResponseEntity.ok(returnPage);
     }
 
@@ -60,7 +59,6 @@ public class CameraController {
     @Transactional
     public ResponseEntity<Page<CameraDTO>> listAllByCustomerId(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page, @PathVariable Long id){
         var returnPage =  repository.findAllByCustomerIdEquals(page,id).map(Camera -> modelMapper.map(Camera, CameraDTO.class));
-        //var returnPage =  repository.findAll(page).map( CameraDTO::new);
         return ResponseEntity.ok(returnPage);
     }
 

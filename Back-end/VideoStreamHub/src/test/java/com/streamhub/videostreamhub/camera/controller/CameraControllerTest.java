@@ -7,6 +7,7 @@ import com.streamhub.videostreamhub.camera.repository.CameraRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,13 +56,16 @@ class CameraControllerTest {
     private JacksonTester<RegisterCameraDTO> registerCameraDTOJSON;
 
     @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
     private JacksonTester<CameraDTO> cameraDTOJSON;
     @Test
     void testRegisterCamera() throws Exception {
         // Mocking data
         var registerCameraDTO = new RegisterCameraDTO("Test Manufacturer",123L,"Test Environment","Test Model","Test Nickname","Test Serial Number");
 
-        when(repository.save(any())).thenReturn(new Camera(registerCameraDTO));
+        when(repository.save(any())).thenReturn(modelMapper.map(registerCameraDTO,Camera.class));
 
         var response = mockMvc
                 .perform(post("/camera")
@@ -69,17 +73,7 @@ class CameraControllerTest {
                         .content(registerCameraDTOJSON.write(registerCameraDTO).getJson()))
                 .andReturn().getResponse();
 
-        var cameraResponse = new CameraDTO(
-                null,
-                registerCameraDTO.manufacturer(),
-                registerCameraDTO.customerId(),
-                registerCameraDTO.environment(),
-                registerCameraDTO.model(),
-                registerCameraDTO.nickName(),
-                registerCameraDTO.serialNumber()
-
-
-        );
+        var cameraResponse = modelMapper.map(registerCameraDTO,CameraDTO.class);
         var jsonEsperado = cameraDTOJSON.write(cameraResponse).getJson();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
