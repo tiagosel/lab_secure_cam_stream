@@ -35,8 +35,7 @@ public class CameraController {
         var camera = new Camera(registerCameraDTO);
         repository.save(camera);
         var uri = uriBuilder.path("/camera/{id}").buildAndExpand(camera.getId()).toUri();
-        ResponseEntity teste = ResponseEntity.created(uri).body(new CameraDTO(camera));
-        return teste;
+        return ResponseEntity.created(uri).body(modelMapper.map(camera, CameraDTO.class));
     }
 
     @PutMapping("{id}")
@@ -45,23 +44,25 @@ public class CameraController {
        var camera = repository.getReferenceById(id);
         modelMapper.map(updateCameraDTO,camera);
         var uri = uriBuilder.path("/camera/{id}").buildAndExpand(camera.getId()).toUri();
-        var  cameraDTO = modelMapper.map(camera, CameraDTOV2.class);
+        var  cameraDTO = modelMapper.map(camera, CameraDTO.class);
         return ResponseEntity.created(uri).body(cameraDTO);
     }
 
     @GetMapping
     @Transactional
     public ResponseEntity<Page<CameraDTO>> listAll(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page){
-        var returnPage =  repository.findAll(page).map( CameraDTO::new);
+            var returnPage =  repository.findAll(page).map(Camera -> modelMapper.map(Camera, CameraDTO.class));
+
         return ResponseEntity.ok(returnPage);
     }
 
     @GetMapping("/customer/{id}")
     @Transactional
-    public ResponseEntity<Page<CameraDTO>> listAllByCustomerId(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page,@PathVariable Long id){
-        var returnPage =  repository.findAllByCustomerIdEquals(page,id).map(CameraDTO::new);
+    public ResponseEntity<Page<CameraDTO>> listAllByCustomerId(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page, @PathVariable Long id){
+        var returnPage =  repository.findAllByCustomerIdEquals(page,id).map(Camera -> modelMapper.map(Camera, CameraDTO.class));
         //var returnPage =  repository.findAll(page).map( CameraDTO::new);
         return ResponseEntity.ok(returnPage);
     }
+
 
 }

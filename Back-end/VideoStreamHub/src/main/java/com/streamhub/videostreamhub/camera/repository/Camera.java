@@ -40,15 +40,6 @@ public class Camera {
         this.serialNumber = registerCameraDTO.serialNumber();
     }
 
-    public Camera(CameraDTO cameraDTO) {
-        this.manufacturer = cameraDTO.manufacturer();
-        this.customerId = cameraDTO.customerId();
-        this.environment = cameraDTO.environment();
-        this.model = cameraDTO.model();
-        this.nickName = cameraDTO.nickName();
-        this.serialNumber = cameraDTO.serialNumber();
-    }
-
 
 
 }
