@@ -48,6 +48,7 @@ public class CameraController {
         return ResponseEntity.created(uri).body(cameraDTO);
     }
 
+
     @GetMapping
     @Transactional
     public ResponseEntity<Page<CameraDTO>> listAll(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page){
@@ -60,6 +61,14 @@ public class CameraController {
     public ResponseEntity<Page<CameraDTO>> listAllByCustomerId(@PageableDefault(size = 10,page = 0,sort = "customerId") Pageable page, @PathVariable Long id){
         var returnPage =  repository.findAllByCustomerIdEquals(page,id).map(Camera -> modelMapper.map(Camera, CameraDTO.class));
         return ResponseEntity.ok(returnPage);
+    }
+
+    @DeleteMapping("{id}")
+    @Transactional
+    public ResponseEntity deleteCamera( @PathVariable Long id) {
+        var camera = repository.getReferenceById(id);
+        camera.delete();
+        return ResponseEntity.noContent().build();
     }
 
 

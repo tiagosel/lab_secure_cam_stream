@@ -4,6 +4,7 @@ package com.streamhub.videostreamhub.camera.repository;
 import com.streamhub.videostreamhub.camera.controller.dto.CameraDTO;
 import com.streamhub.videostreamhub.camera.controller.dto.RegisterCameraDTO;
 import com.streamhub.videostreamhub.camera.controller.dto.UpdateCameraDTO;
+import com.streamhub.videostreamhub.domain.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,9 +30,12 @@ public class Camera {
     private String nickName;
     private String serialNumber;
 
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
 
 
+    public void delete() {
+        this.status = Status.DELETED;
 
-
-
+    }
 }
