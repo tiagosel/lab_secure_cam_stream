@@ -2,6 +2,7 @@ package com.streamhub.videostreamhub.customer.repository;
 
 
 import com.streamhub.videostreamhub.customer.controller.dto.RegisterCustomerDTO;
+import com.streamhub.videostreamhub.domain.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,15 @@ public class Customer {
     private String document;
 
     private String category;
+
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.ACTIVE;
+
+
+    public void delete() {
+        this.status = Status.DELETED;
+
+    }
 
 
 }
