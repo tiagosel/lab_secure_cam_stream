@@ -1,6 +1,7 @@
 package com.streamhub.videostreamhub.camera.controller.dto;
 import com.streamhub.videostreamhub.camera.repository.Camera;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class RegisterCameraDTO
         @NotBlank
         private String manufacturer;
 
+        @NotNull
         private Long customerId;
         @NotBlank
         private String environment;
